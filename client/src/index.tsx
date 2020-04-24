@@ -1,10 +1,11 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { Listings } from './sections';
 import * as serviceWorker from './serviceWorker';
 
 render(
   <React.StrictMode>
-    <div>Hello World!</div>
+    <Listings />
   </React.StrictMode>,
   document.getElementById('root')
 );
