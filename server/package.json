@@ -25,6 +25,7 @@
   },
   "scripts": {
     "start": "nodemon src/index.ts",
-    "build": "tsc -p ./"
+    "build": "tsc -p ./",
+    "seed": "ts-node temp/seed.ts"
   }
 }
