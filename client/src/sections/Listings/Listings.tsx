@@ -34,13 +34,15 @@ interface IProps {
 }
 
 export const Listings = ({ title }: IProps) => {
-  const { data } = useQuery<ListingsData>(LISTINGS);
+  const { data, refetch } = useQuery<ListingsData>(LISTINGS);
 
   const deleteListing = async (id: string) => {
     await server.fetch<DeleteListingData, DeleteListingVariables>({
       query: DELETE_LISTING,
       variables: { id },
     });
+
+    refetch();
   };
 
   const listings = data ? data.listings : null;
