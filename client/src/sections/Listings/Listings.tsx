@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { server } from '../../lib/api';
 import {
   ListingsData,
@@ -37,6 +37,10 @@ interface IProps {
 export const Listings = ({ title }: IProps) => {
   const [listings, setListings] = useState<Listing[] | null>(null);
 
+  useEffect(() => {
+    fetchListings();
+  }, []);
+
   const fetchListings = async () => {
     const { data } = await server.fetch<ListingsData>({ query: LISTINGS });
     setListings(data.listings);
@@ -67,7 +71,6 @@ export const Listings = ({ title }: IProps) => {
     <div>
       <h2>{title}</h2>
       {listingsList}
-      <button onClick={fetchListings}>Query Listings!</button>
     </div>
   );
 };
