@@ -34,7 +34,7 @@ interface IProps {
 }
 
 export const Listings = ({ title }: IProps) => {
-  const { data, refetch } = useQuery<ListingsData>(LISTINGS);
+  const { data, loading, error, refetch } = useQuery<ListingsData>(LISTINGS);
 
   const deleteListing = async (id: string) => {
     await server.fetch<DeleteListingData, DeleteListingVariables>({
@@ -59,6 +59,14 @@ export const Listings = ({ title }: IProps) => {
       })}
     </ul>
   ) : null;
+
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
+
+  if (error) {
+    return <h2>Un oh! Someting whent wrong - please try again later :(</h2>;
+  }
 
   return (
     <div>
