@@ -11,7 +11,7 @@ import {
 import { AuthUrl as AuthUrlData } from '../../lib/graphql/queries/AuthUrl/__generated__/AuthUrl';
 import {
   displaySuccessNotification,
-  diplayErrorMessage,
+  displayErrorMessage,
 } from '../../lib/utils';
 import { Viewer } from '../../lib/types';
 
@@ -60,7 +60,7 @@ export const Login = ({ setViewer }: Props) => {
       });
       window.location.href = data.authUrl;
     } catch {
-      diplayErrorMessage(
+      displayErrorMessage(
         `Sorry! We weren't able to log you in. Please try again later!`
       );
     }

@@ -14,6 +14,6 @@ export const displaySuccessNotification = (
   });
 };
 
-export const diplayErrorMessage = (error: string) => {
+export const displayErrorMessage = (error: string) => {
   return message.error(error);
 };
