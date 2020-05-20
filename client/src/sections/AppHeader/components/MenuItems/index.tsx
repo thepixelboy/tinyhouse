@@ -23,6 +23,7 @@ export const MenuItems = ({ viewer, setViewer }: Props) => {
     onCompleted: (data) => {
       if (data && data.logOut) {
         setViewer(data.logOut);
+        sessionStorage.removeItem('token');
         displaySuccessNotification('You have successfully logged out');
       }
     },
