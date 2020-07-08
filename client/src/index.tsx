@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { render } from 'react-dom';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import ApolloClient from 'apollo-boost';
-import { ApolloProvider, useMutation } from 'react-apollo';
-import { Affix, Layout, Spin } from 'antd';
+import { ApolloProvider, useMutation } from '@apollo/react-hooks';
+import { Affix, Spin, Layout } from 'antd';
 import {
   AppHeader,
   Home,
@@ -14,6 +14,7 @@ import {
   NotFound,
   User,
 } from './sections';
+import { AppHeaderSkeleton, ErrorBanner } from './lib/components';
 import { LOG_IN } from './lib/graphql/mutations';
 import {
   LogIn as LogInData,
@@ -21,8 +22,7 @@ import {
 } from './lib/graphql/mutations/LogIn/__generated__/LogIn';
 import { Viewer } from './lib/types';
 import * as serviceWorker from './serviceWorker';
-import './styles/indexc.css';
-import { AppHeaderSkeleton, ErrorBanner } from './lib/components';
+import './styles/index.css';
 
 const client = new ApolloClient({
   uri: '/api',
@@ -59,7 +59,6 @@ const App = () => {
       }
     },
   });
-
   const logInRef = useRef(logIn);
 
   useEffect(() => {
@@ -78,7 +77,7 @@ const App = () => {
   }
 
   const logInErrorBannerElement = error ? (
-    <ErrorBanner description='We were not able to verify if you were logged in. Please try again later!' />
+    <ErrorBanner description="We weren't able to verify if you were logged in. Please try again later!" />
   ) : null;
 
   return (
@@ -98,7 +97,11 @@ const App = () => {
             path='/login'
             render={(props) => <Login {...props} setViewer={setViewer} />}
           />
-          <Route exact path='/user/:id' component={User} />
+          <Route
+            exact
+            path='/user/:id'
+            render={(props) => <User {...props} viewer={viewer} />}
+          />
           <Route component={NotFound} />
         </Switch>
       </Layout>
