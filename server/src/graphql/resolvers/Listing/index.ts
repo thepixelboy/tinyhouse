@@ -32,6 +32,9 @@ export const listingResolvers: IResolvers = {
         throw new Error(`Falied to query listing: ${error}`);
       }
     },
+    listings: () => {
+      return 'Query.listings';
+    },
   },
   Listing: {
     id: (listing: Listing): string => {
