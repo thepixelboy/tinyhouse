@@ -1,5 +1,10 @@
 import { google } from 'googleapis';
-import { createClient, AddressComponent } from '@google/maps';
+import {
+  Client,
+  AddressComponent,
+  AddressType,
+  GeocodingAddressComponentType,
+} from '@googlemaps/google-maps-services-js';
 
 const auth = new google.auth.OAuth2(
   process.env.G_CLIENT_ID,
@@ -7,25 +12,25 @@ const auth = new google.auth.OAuth2(
   `${process.env.PUBLIC_URL}/login`
 );
 
-const maps = createClient({ key: `${process.env.G_GEOCODE_KEY}`, Promise });
+const maps = new Client({});
 
-const parseAddress = (addressComponents: AddressComponent<string>[]) => {
+const parseAddress = (addressComponents: AddressComponent[]) => {
   let country = null;
   let admin = null;
   let city = null;
 
   for (const component of addressComponents) {
-    if (component.types.includes('country')) {
+    if (component.types.includes(AddressType.country)) {
       country = component.long_name;
     }
 
-    if (component.types.includes('administrative_area_level_1')) {
+    if (component.types.includes(AddressType.administrative_area_level_1)) {
       admin = component.long_name;
     }
 
     if (
-      component.types.includes('locality') ||
-      component.types.includes('postal_town')
+      component.types.includes(AddressType.locality) ||
+      component.types.includes(GeocodingAddressComponentType.postal_town)
     ) {
       city = component.long_name;
     }
@@ -56,12 +61,17 @@ export const Google = {
     return { user: data };
   },
   geocode: async (address: string) => {
-    const res = await maps.geocode({ address }).asPromise();
+    if (!process.env.G_GEOCODE_KEY)
+      throw new Error('Missing Google Maps API key');
+
+    const res = await maps.geocode({
+      params: { address, key: process.env.G_GEOCODE_KEY },
+    });
 
     if (res.status < 200 || res.status > 299) {
-      throw new Error('failed to geocode address');
+      throw new Error('Failed to geocode address');
     }
 
-    return parseAddress(res.json.results[0].address_components);
+    return parseAddress(res.data.results[0].address_components);
   },
 };
