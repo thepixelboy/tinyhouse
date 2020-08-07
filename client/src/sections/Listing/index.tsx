@@ -12,7 +12,7 @@ import {
 import {
   ListingBookings,
   ListingCreateBooking,
-  ListingCreateBookingModal,
+  WrappedListingCreateBookingModal as ListingCreateBookingModal,
   ListingDetails,
 } from './components';
 import { Viewer } from '../../lib/types';
